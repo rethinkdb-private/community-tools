@@ -125,6 +125,65 @@ form {
     .input-wrapper {
         @include span-columns(8);
         @include omega();
+        position: relative;
+    }
+}
+
+ul#github-user-results {
+    opacity: 0;
+    position: absolute;
+    width: 80%;
+    border: thin solid #ccc;
+    border-radius: 3px;
+    background: white;
+    z-index: 999;
+    padding-top: 0.1em;
+    @include box-shadow(0 1px 2px rgba(0,0,0,0.3));
+    @include transition(opacity 0.1s ease-in-out);
+    @include transition(height 0.1s ease-in-out);
+
+    $left-margin: 0.8em;
+    &.show { opacity: 1; }
+    &:before {
+        content: '';
+        display: block;
+        @include triangle(15px, white, up);
+        position: absolute;
+        top: -13px;
+        left: $left-margin;
+    }
+    li {
+        background: white;
+        border-bottom: thin solid #ccc;
+        &:last-child { border-bottom: none; }
+        padding: 0.4em 0;
+        margin: 0em $left-margin;
+        color: #333;
+        font-size: 1.1em;
+        cursor: pointer;
+        overflow: hidden;
+        p {
+            color: #333;
+            font-size: 1.1em;
+            font-weight: bold;
+            &.login { border-bottom: thin dotted white; }
+            &.no-results {
+                color: #aaa;
+                font-style: italic;
+            }
+        }
+        img {
+            float: left;
+            width: 1.3em;
+            height: 1.3em;
+        }
+
+        p {
+            margin-left: 2em;
+            line-height: 1.3em;
+        }
+
+        &:hover p.login { border-bottom: thin dotted #aaa; }
     }
 }
 

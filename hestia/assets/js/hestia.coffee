@@ -56,6 +56,42 @@ $ ->
         event.preventDefault()
         location.reload()
 
+    done_typing_interval = 1000 # for GH instant search, search once the user has stopped typing for this many milliseconds
+    hestia.typing_timer = undefined
+    hestia.search_timer = undefined
+    $('input#github-username').on 'keyup', ->
+        min_time_between = 12000 # GitHub requests without an authorized key are rate-limited to five requests per limit, or one request every 12 seconds
+        clearTimeout(hestia.typing_timer)
+        clearTimeout(hestia.search_timer)
+        username = $('input#github-username').val()
+        if username.length > 0
+            # If the user has stopped typing for a sufficient amount of time, check that enough time has passed to make a GH request
+            hestia.typing_timer = setTimeout ->
+                console.log '3 seconds have passed'
+                if hestia.last_gh_search?
+                    # Calculate how much time has passed since the last search
+                    ms_since_last = new Date() - hestia.last_gh_search
+                    console.log ms_since_last / 1000, 's'
+                    if ms_since_last > min_time_between # More than X seconds have pased
+                        search_github(username)
+                    else
+                        # Set a timer for the remaining time, then run the search
+                        console.log 'setting a timer for ',(min_time_between - ms_since_last)/1000,'s from now'
+                        setTimeout ->
+                            search_github(username)
+                        , (min_time_between - ms_since_last)
+
+                # This is our first GH search, no need to worry about intervals
+                else search_github(username)
+            , done_typing_interval
+
+
+###
+# -------------------
+# DYMO labeling magic
+# -------------------
+###
+
 # Check if our environment is ready (e.g. the DYMO library is available and ready)
 dymo_framework_check = ->
     env = hestia.d.checkEnvironment()
@@ -135,3 +171,22 @@ hestia_start = ->
             if printer? and printer.name?
                 hestia.d.printLabel(printer.name, print_options, label_as_str)
             else console.log 'Printer error: no DYMO printer found.'
+
+###
+# -------------------
+# GitHub auto-fill magic
+# -------------------
+###
+
+search_github = (user) ->
+    $.getJSON "https://api.github.com/search/users?q=#{encodeURIComponent(user)}+in:users", (data) ->
+        hestia.last_gh_search = new Date()
+        $list = $('#github-user-results')
+        $list.empty()
+
+        if data.items.length is 0
+            $list.append("<li><p class='no-results'>No users found</p></li>")
+        else
+            for user in data.items[0..5]
+                $list.append "<li><img src='#{user.avatar_url}'><p class='login'>#{user.login}</p></li>"
+        $list.addClass('show')
