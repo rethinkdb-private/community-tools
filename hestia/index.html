@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Basic page information -->
+        <meta charset="utf-8">
+        <title>Welcome to RethinkDB</title>
+
+        <!-- Mobile-specific metas -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+        <!-- CSS stylesheets -->
+        <link rel="stylesheet" href="/assets/css/styles.css">
+        <link rel="stylesheet" href="/assets/css/syntax.css">
+
+        <!-- JavaScript -->
+        <script src="assets/js/DYMO.Label.Framework.1.2.6.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+        <script src="assets/js/hestia.js"></script>
+
+        <!--[if lt IE 9]>
+            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,800,700">
+        <link href="http://fonts.googleapis.com/css?family=Copse" rel="stylesheet" type="text/css">
+        <link href="http://fonts.googleapis.com/css?family=Cabin:400,500,600,700,400italic,500italic,600italic,700italic" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Quattrocento+Sans:400italic,400,700italic,700" rel="stylesheet" type="text/css">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+        <!-- Favicons -->
+        <link rel="shortcut icon" href="/favicon.ico">
+        <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+    </head>
+    <body>
+        <div class="error-bar error" id="dymo-not-loaded"
+            data-error="<strong>Oh no! The DYMO browser plugin isn't available:</strong> make sure you give it permission to run, or try <a href='#' class='reload-page'>reloading the page</a>."
+            data-success="<strong>Hurray! DYMO browser plugin loaded:</strong> we're ready to print some labels."></div>
+        <div class="error-bar" id="no-dymo-printer"
+            data-error="<strong>Oh no! The DYMO printer wasn't found:</strong> make sure it's plugged in and the drivers are properly installed, then <a href='#' class='reload-page'>reload the page</a>."></div>
+        <div id="main">
+            <h1>RethinkDB Bay Area Meetup</h1>
+            <h2>Welcome, please sign in!</h2>
+            <aside><img src="/assets/images/thinker-with-coffee_resized.png"></aside>
+            <div id="main-form">
+                <section class="form-section">
+                    <h3>Quickly print your nametag via GitHub.</h3>
+                    <form id="github-form">
+                        <div class="row">
+                            <label for="github-username">GitHub username:</label>
+                            <div class="input-wrapper"><input type="text" id="github-username" autocomplete="off"></input></div>
+                        </div>
+                    </form>
+                </section>
+                <section class="form-section">
+                    <h3>Tell us who you are (we can't wait to meet you!)</h3>
+                    <form id="profile-form">
+                        <div class="row name">
+                            <label for="name">Name:</label>
+                            <div class="input-wrapper"><input type="text" id="name" autocomplete="off"></div>
+                            <div class="tooltip" data-error="Enter your name." data-success="Great, we're all set!"></div>
+                        </div>
+                        <div class="row about">
+                            <label for="name">About you:</label>
+                            <div class="input-wrapper"><input type="text" id="about" autocomplete="off"></div>
+                        </div>
+                    </form>
+                </section>
+                <a href="#" id="submit">Print a nametag &rarr;</a>
+            </div>
+        </div>
+    </body>
+</html>
