@@ -1,5 +1,8 @@
-_site
 .DS_Store
 *.swp
 *~
 *.sass-cache*
+*.pyc
+.env
+hestia/static/gen
+.webassets-cache

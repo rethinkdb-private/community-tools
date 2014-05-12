@@ -58,18 +58,21 @@ body {
 }
 
 .error-bar {
-    position: absolute;
-    top: 0;
-    display: none;
-    height: 2.3em;
     $padding: 30px;
-    width: $site-width - $padding*2;
-    margin: 0 auto;
+    $width: $site-width - $padding*2;
+    width: $width;
+    height: 2.3em;
+    top: 0;
+    left: 50%;
+    margin-left: -$width/2;
+    padding: 0.5em $padding;
+    position: absolute;
+    display: none;
+
     background: $gentle-red;
     font-size: 1.3em;
     line-height: 1.3em;
     color: white;
-    padding: 0.5em $padding;
     border-radius: 0px 0px 3px 3px;
     text-shadow: 0px 1px 0px rgba(0,0,0,0.2);
 

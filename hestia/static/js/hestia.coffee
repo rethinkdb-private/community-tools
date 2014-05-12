@@ -1,5 +1,3 @@
----
----
 # See documentation on the DYMO format in /docs
 window.hestia = {
     debug : false,

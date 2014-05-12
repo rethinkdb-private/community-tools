@@ -1,3 +1,0 @@
-name: Hestia
-markdown: redcarpet
-exclude: ['docs', 'bs-config.js', 'Rakefile', 'README.md']

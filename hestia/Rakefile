@@ -1,9 +1,0 @@
-desc 'Print out compiled output of main CoffeeScript app.'
-task :coffee do
-    sh 'tail -n+3 assets/js/hestia.coffee | coffee -p -s'
-end
-
-desc 'Run the Jekyll server and auto-regenerate files'
-task :default do
-    sh 'jekyll serve -w'
-end

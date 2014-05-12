@@ -1,23 +1,20 @@
-rebrand
-=======
+# README
 
-###Installation process
+Install Sass and CoffeeScript:
 
-__Required packages:__
-- `jekyll`: run `gem install jekyll`
-- `jekyll-sass`: run `gem install jekyll-sass`
+```
+$ sudo gem install sass
+$ sudo npm install -g coffee-script
+```
 
-Optional packages:
-- `browser-sync`: run `npm install -g browser-sync`
+Active a virtualenv:
 
-###View the site
+```
+$ virtualenv .env
+$ source .env/bin/activate
+```
 
-__Using Jekyll:__
+Install packages using `pip`:
 
-Run `jekyll serve -w`, open [http://localhost:4000](http://localhost:4000).
-
-__Using browser-sync:__
-
-Run `jekyll -w`.
-
-Run `browser-sync start` from this directory.
+```
+.env/bin/pip install -r requirements.txt

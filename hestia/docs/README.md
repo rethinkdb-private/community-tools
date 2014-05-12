@@ -1,6 +1,3 @@
----
----
-
 Best resource on DYMO label file formats: http://developers.dymo.com/2010/03/23/understanding-label-file-formats-in-dymo-label-software-v-8-overview/
 Full schema for the XML file format: http://www.labelwriter.com/software/dls/sdk/LabelFile.xsd
 
