@@ -48,14 +48,18 @@
                 <section class="form-section">
                     <h3>Quickly print your nametag via GitHub.</h3>
                     <form id="github-form">
-                        <div class="row">
+                        <div class="row github">
                             <label for="github-username">GitHub username:</label>
-                            <div class="input-wrapper"><input type="text" id="github-username" autocomplete="off"></input></div>
+                            <div class="input-wrapper">
+                                <input type="text" id="github-username" autocomplete="off" placeholder="We'll get your info from GitHub."></input>
+                                <div class="loading"></div>
+                                <div class="tooltip" data-error="There's no GitHub user by that name." data-success="OK, we found you on GitHub!"></div>
+                            </div>
                         </div>
                     </form>
                 </section>
                 <section class="form-section">
-                    <h3>Tell us who you are (we can't wait to meet you!)</h3>
+                    <h3>Tell us about yourself (we can't wait to meet you!)</h3>
                     <form id="profile-form">
                         <div class="row name">
                             <label for="name">Name:</label>

@@ -2,7 +2,8 @@
 ---
 # See documentation on the DYMO format in /docs
 window.hestia = {
-    debug : true,
+    debug : false,
+    css_transition_duration: 100,
 }
 
 hestia.layouts = {
@@ -55,6 +56,16 @@ $ ->
     $('.reload-page').on 'click', (event) ->
         event.preventDefault()
         location.reload()
+    $('input#github-username').on 'blur', (event) ->
+        name = $('input#github-username').val()
+        if name.length > 0 then find_github_user(name)
+
+
+###
+# -------------------
+# DYMO labeling magic
+# -------------------
+###
 
 # Check if our environment is ready (e.g. the DYMO library is available and ready)
 dymo_framework_check = ->
@@ -109,8 +120,8 @@ hestia_start = ->
             $tooltip.addClass('show')
 
             # Keep checking for a name as the user types
-            $name.off('keyup')
-            $name.on 'keyup', ->
+            $name.off('blur keyup')
+            $name.on 'blur keyup', ->
                 if $name.val().length > 0
                     $tooltip.text $tooltip.data('success')
                     $tooltip.addClass('success')
@@ -135,3 +146,57 @@ hestia_start = ->
             if printer? and printer.name?
                 hestia.d.printLabel(printer.name, print_options, label_as_str)
             else console.log 'Printer error: no DYMO printer found.'
+
+###
+# -------------------
+# GitHub auto-fill magic
+# -------------------
+###
+
+find_github_user = (name) ->
+    $tooltip = $('.row.github .tooltip')
+    $loading = $('.row.github .loading')
+    $loading.addClass('show')
+
+    $.getJSON "https://api.github.com/users/#{encodeURIComponent(name)}", (user) ->
+        # If there was an form error before, tell the user it's been fixed
+        if $tooltip.hasClass('show') and not $tooltip.hasClass('success')
+            $tooltip.text($tooltip.data('success'))
+            $tooltip.addClass('success')
+            # Show the success message for three seconds, the hide it
+            setTimeout ->
+                if $tooltip.hasClass('success') # Make sure an error hasn't happened in the last three seconds
+                    $tooltip.removeClass('show')
+                    # Wait for the CSS transition to complete before dropping the class
+                    setTimeout ->
+                        $tooltip.removeClass('success')
+                    , hestia.css_transition_duration
+            , 3000
+
+        # Fill in the user details
+        if user.name?
+            $('input#name').val(user.name)
+        if user.company? and user.company.length > 0
+            about = "Creator at #{user.company}"
+        else
+            about = "Creator"
+        $('input#about').val(about)
+
+        # Hide the loading indicator after briefly showing it
+        setTimeout ->
+            $loading.removeClass('show')
+        , 500
+    .error (event) ->
+        # We couldn't find that GitHub user
+        if event.status is 404
+            $tooltip.removeClass('success')
+            $tooltip.text($tooltip.data('error'))
+            $tooltip.addClass('show')
+
+            # Hide the loading indicator after briefly showing it
+            setTimeout ->
+                $loading.removeClass('show')
+            , 500
+
+        else
+            console.log 'Error fetching GitHub user: ',event
