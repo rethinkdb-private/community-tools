@@ -15,9 +15,23 @@ $ ->
     $('.reload-page').on 'click', (event) ->
         event.preventDefault()
         location.reload()
+
+    # Find GitHub username once the user stops typing, or if the user blurs the field
+    done_typing_interval = 1000 
+    hestia.typing_timer = undefined
     $('input#github-username').on 'blur', (event) ->
-        name = $('input#github-username').val()
-        if name.length > 0 then find_github_user(name)
+        clearTimeout(hestia.typing_timer)
+        github = $('input#github-username').val()
+        if github.length > 0 then find_github_user(github)
+    
+    $('input#github-username').on 'keyup', ->
+        clearTimeout(hestia.typing_timer)
+        github = $('input#github-username').val()
+        if github.length > 0
+            # If the user has stopped typing for a sufficient amount of time, check that enough time has passed to make a GH request
+            hestia.typing_timer = setTimeout ->
+                find_github_user(github)
+            , done_typing_interval 
 
 
 ###

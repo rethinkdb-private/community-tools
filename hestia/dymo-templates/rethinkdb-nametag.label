@@ -42,7 +42,7 @@
       <IsMirrored>False</IsMirrored>
       <IsVariable>False</IsVariable>
       <HorizontalAlignment>Left</HorizontalAlignment>
-      <VerticalAlignment>Top</VerticalAlignment>
+      <VerticalAlignment>Bottom</VerticalAlignment>
       <TextFitMode>ShrinkToFit</TextFitMode>
       <UseFullFontHeight>True</UseFullFontHeight>
       <Verticalized>False</Verticalized>
@@ -50,13 +50,13 @@
         <Element>
           <String>Clark Kent</String>
           <Attributes>
-            <Font Family="Quattrocento Sans" Size="48" Bold="True" Italic="False" Underline="False" Strikeout="False"/>
+            <Font Family="Quattrocento Sans" Size="60" Bold="True" Italic="False" Underline="False" Strikeout="False"/>
             <ForeColor Alpha="255" Red="37" Green="37" Blue="37"/>
           </Attributes>
         </Element>
       </StyledText>
     </TextObject>
-    <Bounds X="1310.4" Y="551.2717" Width="4320" Height="600"/>
+    <Bounds X="1310.4" Y="315.0998" Width="4320" Height="808.3594"/>
   </ObjectInfo>
   <ObjectInfo>
     <TextObject>
