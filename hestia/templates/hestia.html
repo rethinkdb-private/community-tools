@@ -38,7 +38,7 @@
         <div class="error-bar" id="no-dymo-printer"
             data-error="<strong>Oh no! The DYMO printer wasn't found:</strong> make sure it's plugged in and the drivers are properly installed, then <a href='#' class='reload-page'>reload the page</a>."></div>
         <div id="main">
-            <h1>RethinkDB Bay Area Meetup</h1>
+            <h1>{{ event_name }}</h1>
             <h2>Welcome, please sign in!</h2>
             <aside><img src="{{ url_for('static', filename='images/thinker-with-coffee_resized.png') }}"></aside>
             <div id="main-form">
@@ -60,12 +60,12 @@
                     <form id="profile-form">
                         <div class="row name">
                             <label for="name">Name:</label>
-                            <div class="input-wrapper"><input type="text" id="name" autocomplete="off"></div>
+                            <div class="input-wrapper"><input type="text" id="name" autocomplete="off" placeholder="Clark Kent"></div>
                             <div class="tooltip" data-error="Enter your name." data-success="Great, we're all set!"></div>
                         </div>
                         <div class="row about">
-                            <label for="name">About you:</label>
-                            <div class="input-wrapper"><input type="text" id="about" autocomplete="off"></div>
+                            <label for="about">About you:</label>
+                            <div class="input-wrapper"><input type="text" id="about" autocomplete="off" placeholder="Reporter at The Daily Planet"></div>
                         </div>
                     </form>
                 </section>

@@ -4,45 +4,6 @@ window.hestia = {
     css_transition_duration: 100,
 }
 
-hestia.layouts = {
-    die_cut: """
-<?xml version="1.0" encoding="utf-8"?>
-<DieCutLabel Version="8.0" Units="twips">
-    <PaperOrientation>Landscape</PaperOrientation>
-    <Id>Address</Id>
-    <PaperName>30252 Address</PaperName>
-    <DrawCommands>
-        <RoundRectangle X="0" Y="0" Width="1581" Height="5040" Rx="270" Ry="270" />
-    </DrawCommands>
-    <ObjectInfo>
-        <TextObject>
-            <Name>Text</Name>
-            <ForeColor Alpha="255" Red="0" Green="0" Blue="0" />
-            <BackColor Alpha="0" Red="255" Green="255" Blue="255" />
-            <LinkedObjectName></LinkedObjectName>
-            <Rotation>Rotation0</Rotation>
-            <IsMirrored>False</IsMirrored>
-            <IsVariable>True</IsVariable>
-            <HorizontalAlignment>Left</HorizontalAlignment>
-            <VerticalAlignment>Middle</VerticalAlignment>
-            <TextFitMode>ShrinkToFit</TextFitMode>
-            <UseFullFontHeight>True</UseFullFontHeight>
-            <Verticalized>False</Verticalized>
-            <StyledText>
-                <Element>
-                    <String>[empty text]</String>
-                    <Attributes>
-                        <Font Family="Open Sans" Size="22" Bold="True" Italic="False" Underline="False" Strikeout="False" />
-                        <ForeColor Alpha="255" Red="0" Green="0" Blue="0" />
-                    </Attributes>
-                </Element>
-            </StyledText>
-        </TextObject>
-        <Bounds X="331" Y="150" Width="4560" Height="1343" />
-    </ObjectInfo>
-</DieCutLabel>
-"""
-}
 $ ->
     if not dymo? or not dymo.label? or not dymo.label.framework?
         console.log "DYMO JS framework not loaded, make sure the DYMO JS library is available."
@@ -94,24 +55,26 @@ dymo_framework_check = ->
                 setTimeout(recheck_dymo, 500)
         recheck_dymo()
     else dymo_printer_check()
-        # Make sure there's actually a printer to use -- if not, show an error bar (if it hasn't already been shown)
 
 # Make sure there's actually a printer to use -- if not, show an error bar (if it hasn't already been shown)
 dymo_printer_check = ->
     if not hestia.d.getPrinters().length > 0
         $el = $('#no-dymo-printer:hidden')
         $el.html($el.data('error')).slideDown()
-    # We have a printer, we're good to go!
-    else hestia_start()
-    hestia_start()
+    # We have a printer, let's get the label template, and start the app
+    else
+        $.get '/dymo-template', (data) -> hestia_start(data)
 
-hestia_start = ->
+hestia_start = (label_template) ->
+
     # Verify all the required info, then print the label
     $('#submit').on 'click', (event) ->
         $name = $('input#name')
         name = $name.val()
         about = $('input#about').val()
-        # No name, so show an error tooltipe
+        github = $('input#github-username').val()
+
+        # No name, so show an error tooltip
         if not name.length > 0
             $tooltip = $('.row.name .tooltip')
             $tooltip.text $tooltip.data('error')
@@ -127,19 +90,42 @@ hestia_start = ->
                     $tooltip.text $tooltip.data('error')
                     $tooltip.removeClass('success') 
         else
+            # Log the user
+            $.post '/logs',
+                name: name,
+                about: about,
+                github: github
             # Define the printer and print options
             printer = hestia.d.getPrinters()[0]
             print_options = ''
 
             # Prepare the label
-            label = $.parseXML hestia.layouts.die_cut
-            $label = $(label)
-            $('String', $label).text("#{name}\n#{about}")
-            label_as_str = (new XMLSerializer()).serializeToString(label)
+            template = $.parseXML label_template
+            $template = $(template)
+
+            # Find the <String> element in the template that has a matching <Name> tag
+            find_label_string = (name) -> $("Name:contains('#{name}')", $template).parent().find('String')
+
+            $label_name = find_label_string 'Name'
+            $label_about = find_label_string 'About'
+            $label_github = find_label_string 'GitHub'
+
+            # Substitute all the values in the label template with user-supplied info
+            $label_name.text(name)
+            if about.length > 0 then $label_about.text(about) else $label_about.text('')
+            # If we don't have a GitHub id, hide the GitHub logo
+            if not github.length > 0
+                $('Name:contains("GitHubImage")').closest('ObjectInfo').remove()
+                $label_github.text('')
+            else
+                $label_github.text("@#{github}")
             
             # Debugging info if needed
-            if hestia.debug then console.log 'Printer: ', printer, 'Print options: ', print_options, 'Label XML: ', label
+            if hestia.debug then console.log 'Printer: ', printer, 'Print options: ', print_options, 'Label XML: ', $template
 
+            # Render the template as a string
+            label_as_str = (new XMLSerializer()).serializeToString(template)
+            
             # Actually print the label
             if printer? and printer.name?
                 hestia.d.printLabel(printer.name, print_options, label_as_str)

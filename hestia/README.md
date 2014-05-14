@@ -18,3 +18,18 @@ Install packages using `pip`:
 
 ```
 .env/bin/pip install -r requirements.txt
+```
+
+
+Initialize the app with the `invoke` task:
+
+```
+$ invoke init
+```
+
+
+Run the app with the `invoke` task:
+
+```
+$ invoke app
+```

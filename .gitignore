@@ -6,3 +6,4 @@
 .env
 hestia/static/gen
 .webassets-cache
+hestia/config.yaml

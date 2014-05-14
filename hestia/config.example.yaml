@@ -1,0 +1,5 @@
+--- # Hestia configuration
+log_dirs: ['logs']
+event:
+    name: 'RethinkDB SV Meetup'
+    log_to: 'sv-meetup.json'
