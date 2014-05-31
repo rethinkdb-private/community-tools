@@ -7,3 +7,5 @@
 hestia/static/gen
 .webassets-cache
 hestia/config.yaml
+meet-the-team/_site
+hestia/logs

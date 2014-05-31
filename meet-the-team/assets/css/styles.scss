@@ -1,0 +1,158 @@
+$font-stack: 'Open Sans', sans-serif;
+$copse: 'Copse', serif;
+$cabin: 'Cabin', sans-serif;
+$quattrocento: 'Quattrocento Sans', sans-serif;
+$base-border-radius:  3px;
+//$visual-grid: true;
+
+$welcome-blue: #2E313C;
+$cream: rgb(242,234,235);
+$mint-green: #91C7B1;
+$gentle-green: #467A65;
+$gentle-red: #B8454B;
+
+$site-width: 1400px;
+$site-margin: 50px;
+$main-width: $site-width - ($site-margin * 2);
+
+@import 'bourbon/bourbon';
+@import 'neat/neat';
+@import 'bitters/bitters';
+
+// Mixins -- font smoothing (credit to Maximilian Hoffmann: http://maximilianhoffmann.com/posts/better-font-rendering-on-osx)
+@mixin font-smoothing($value: on) {
+    @if $value == on {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    @else {
+        -webkit-font-smoothing: subpixel-antialiased;
+        -moz-osx-font-smoothing: auto;
+    }
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: $quattrocento;
+    h1, h2, h3, h4, h5, h6, p {
+        font-family: $quattrocento;
+    }
+    h1 {
+        margin: 0;
+        font-weight: normal;
+        font-size: 2.5em;
+    }
+    h2 {
+        font-weight: normal;
+        font-size: 1.6em;
+    }
+    background: $welcome-blue;
+    color: $cream;
+}
+
+#main {
+    h1.site-title {
+        font-size: 4em;
+        margin-bottom: 0.5em;
+    }
+    width: $site-width;
+    margin: 30px auto;
+    padding: 0 $site-margin;
+}
+
+#team { 
+    @include outer-container;
+    max-width: $main-width;
+}
+#team article {
+    @include span-columns(6);
+    @include omega(2n);
+    background: tint($welcome-blue, 15%);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    min-height: 170px;
+    .img {
+        float: left;
+        $size: 150px;
+        width: $size;
+        height: $size;
+        border-radius: $size/2;
+        @include box-shadow(0 0 8px rgba(0, 0, 0, .1));
+        &.etienne {
+            background: url('/assets/images/team/etienne.jpg') no-repeat center -25px;
+            background-size: 215px;
+        }
+        &.daniel {
+            background: url('/assets/images/team/daniel.jpg') no-repeat -120px -50px;
+            background-size: 430px;
+        }
+        &.slava {
+            background: url('/assets/images/team/slava.jpg') no-repeat center -47px;
+            background-size: 250px;
+        }
+        &.mlucy {
+            background: url('/assets/images/team/mlucy.jpg') no-repeat -105px -25px;
+            background-size: 370px;
+        }
+        &.mg {
+            background: url('/assets/images/team/mg.jpg') no-repeat center -40px;
+            background-size: 210px;
+        }
+        &.christina {
+            background: url('/assets/images/team/christina.jpg') no-repeat -113px -43px;
+            background-size: 350px;
+        }
+    }
+    .details {
+        margin-left: 175px;
+        h1 { margin-bottom: 0em; 
+            display: inline-block;
+        }
+        h2 {
+            margin-bottom: 0.7em;
+            margin-left: 0.5em;
+            display: inline-block;
+            color: shade($cream, 30%);
+        }
+        p {
+            font-size: 1.7em;
+            line-height: 1.3em;
+        }
+    }
+}
+
+#wifi {
+    float: left;
+    margin-left: 30px;
+    width: 635px;
+    $padding: 30px;
+    background: #773756;
+    border-radius: 8px;
+    padding: $padding;
+    p {
+        font-size: 2em;
+        &:last-child { margin-bottom: 0 }
+        //display: inline-block;
+    }
+    #wifi-name { width: 630px; }
+    #wifi-password { width: 500px; }
+    height: 120px;
+    margin-bottom: 30px;
+}
+
+#lightning {
+    float: left;
+    width: 635px;
+    $padding: 30px;
+    background: #206156;
+    border-radius: 8px;
+    padding: 30px;
+    height: 120px;
+    p {
+        font-size: 2em;
+        &:last-child { margin-bottom: 0 }
+    }
+    margin-bottom: 30px;
+}
