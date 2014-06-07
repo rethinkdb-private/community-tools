@@ -14,7 +14,8 @@ CAPSULE_SITE = 'https://rethinkdb-testing.capsulecrm.com'
 
 IMPORTED_TAG = 'Imported'
 UNREVIEWED_TAG = 'Unreviewed'
-SOURCE_TAG = 'Shirts for stories'
+SOURCE_TAG = 'Signed CLA'
+CONTRIBUTOR_TAG = 'Contributor'
 auth = HTTPBasicAuth(CAPSULE_TOKEN, 'x')
 headers={
     'Accept': 'application/json',
@@ -30,7 +31,6 @@ def add_tag(party_id, tag):
 def add_user(data):
     user = data['user']
     timestamp = data['timestamp']
-    story = data['story']
 
     name = user['person']['firstName'] + user['person']['lastName']
     # Create the new user on Capsule
@@ -38,14 +38,14 @@ def add_user(data):
     person_id = req.headers['location'].rsplit('/',1)[1]
 
     # Add tags to the person we just created
-    for tag in [UNREVIEWED_TAG, IMPORTED_TAG, SOURCE_TAG]:
+    for tag in [UNREVIEWED_TAG, IMPORTED_TAG, SOURCE_TAG, CONTRIBUTOR_TAG]:
         req = add_tag(person_id, tag)
         if not req.status_code is 201:
             print 'Error adding tag %s to %s: %s' % (tag, name, req.text)
 
-    # Note their shirt story in the history
+    # Note the date they signed the CLA in the history
     date = datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%dT%H:%M:%SZ")
-    note = "Shirts for stories submission\n-----\n"+story
+    note = "Became a RethinkDB contributor."
     history_data = {
         'historyItem': {
             'entryDate': date,
@@ -55,7 +55,6 @@ def add_user(data):
     req = add_data('/api/party/'+person_id+'/history', history_data)
 
     print "Adding person: %s" % name
-    
 
 def start():
     # Command-line argument: specify the CSV data file
@@ -73,40 +72,42 @@ def start():
     users = []
 
     for i, row, in enumerate(rows):
-        # Name of the user
-        name = row['Name']
-        split_name = name.rsplit(' ',1)
-        first_name = split_name[0]
-        if len(split_name) > 1:
-            last_name = split_name[1]
-        else:
-            last_name = ''
-
+        name = "%s %s" % (row['Name'], row['Last'])
         # Put together data on the user
         person_data = {
             'person': {
-                'firstName': first_name,
-                'lastName': last_name,
+                'firstName': row['Name'],
+                'lastName': row['Last'],
                 'contacts': {
                     'email': {
-                        'emailAddress': row['Email address'],
+                        'emailAddress': row['Email'],
                     },
-                }
+                    'address': {
+                        'street': row['Mailing Address']
+                    },
+                    'website': [
+                        {
+                            'webService': 'SKYPE',
+                            'webAddress': row['Phone number or Skype username']
+                        },
+                        {
+                            'webService': 'GITHUB',
+                            'webAddress': row['GitHub username'],
+                        }
+                    ],
+                },
             }
         }
 
-        # If we have a GitHub username, add it to their contact details
-        if row['Github username']:
-            person_data['person']['contacts']['website'] = {
-                'webService': 'GITHUB',
-                'webAddress': row['Github username'],
-            }
+        # If we have a company or organization, add it to their contact details
+        if row['Company (if applicable)']:
+            person_data['person']['organisationName'] = row['Company (if applicable)']
 
         users.append({
             'user': person_data,
             'timestamp': row['Date Created'],
-            'story': row['What are you using RethinkDB for?'],
         })
+
 
     # Add users using a multiprocessing pool
     print "Adding %d users to Capsule." % len(rows)
