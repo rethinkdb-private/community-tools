@@ -395,7 +395,7 @@ def start_import():
     # If there are any errors, show them
     if len(errors) > 0:
         print "\n---------------------\n%d errors during import\n---------------------" % (len(errors),)
-        print json.dumps((errors, sort_keys=True, indent=4)
+        print json.dumps(errors, sort_keys=True, indent=4)
 
 if __name__ == "__main__":
     start_import()
