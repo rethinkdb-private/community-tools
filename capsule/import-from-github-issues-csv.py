@@ -8,13 +8,13 @@ import copy
 import re
 
 GITHUB_TOKEN = '3df11993e5fa5e4b0c661b7abc965345f028c04d'
-"""
 CAPSULE_TOKEN = '02cba853e82ede5f2b99947b8a717b94'
 CAPSULE_SITE = 'https://rethinkdb.capsulecrm.com'
 """
 # Credentials for testing
 CAPSULE_TOKEN = '96151e6b49271a39f2b139f23b02af32'
 CAPSULE_SITE = 'https://rethinkdb-testing.capsulecrm.com'
+"""
 
 IMPORTED_TAG = 'Imported'
 UNREVIEWED_TAG = 'Unreviewed'

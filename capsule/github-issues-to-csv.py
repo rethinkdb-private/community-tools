@@ -2,6 +2,7 @@
 
 import ucsv, requests, json, argparse, pprint
 from multiprocessing import Pool
+import datetime
 
 GITHUB_TOKEN = '3df11993e5fa5e4b0c661b7abc965345f028c04d'
 REPO = 'rethinkdb/rethinkdb'
@@ -76,6 +77,8 @@ def start():
         writer.writerow(['timestamp', 'event', 'user', 'permalink', 'issue', 'issue_title', 'body'])
         for event in events:
             writer.writerow(event)
+
+    print "Fetched %d events as of %s" % (len(events), datetime.datetime.now())
 
 if __name__ == "__main__":
     start()

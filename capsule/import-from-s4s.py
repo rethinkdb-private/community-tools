@@ -4,13 +4,13 @@ import ucsv, sys, argparse, requests, json, urllib
 from datetime import datetime
 from requests.auth import HTTPBasicAuth
 from multiprocessing import Pool
-"""
 CAPSULE_TOKEN = '02cba853e82ede5f2b99947b8a717b94'
 CAPSULE_SITE = 'https://rethinkdb.capsulecrm.com'
 """
 # Credentials for testing
 CAPSULE_TOKEN = '96151e6b49271a39f2b139f23b02af32'
 CAPSULE_SITE = 'https://rethinkdb-testing.capsulecrm.com'
+"""
 
 IMPORTED_TAG = 'Imported'
 UNREVIEWED_TAG = 'Unreviewed'
