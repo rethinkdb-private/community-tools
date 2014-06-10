@@ -32,7 +32,7 @@ def add_user(data):
     timestamp = data['timestamp']
     story = data['story']
 
-    name = user['person']['firstName'] + user['person']['lastName']
+    name = user['person']['firstName'] + ' ' + user['person']['lastName']
     # Create the new user on Capsule
     req = add_data('/api/person', user)
     person_id = req.headers['location'].rsplit('/',1)[1]

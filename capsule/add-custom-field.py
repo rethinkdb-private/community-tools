@@ -59,7 +59,7 @@ def start():
             continue
 
     # Look up info on each user
-    p = Pool(5)
+    p = Pool(10)
     success = p.map(update_user, user_map)
 
 if __name__ == "__main__":
