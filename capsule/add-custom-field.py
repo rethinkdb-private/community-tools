@@ -45,6 +45,9 @@ def start():
 
     user_map = []
     for user in users:
+        # If the user has no recorded contacts, proceed
+        if type(user['contacts']) is not dict:
+            continue
         try:
             websites = user['contacts']['website']
             # If there's one website, it's a dict, otherwise, it's a list of dicts
