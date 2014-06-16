@@ -11,26 +11,26 @@ Capsule CRM lets us keep track of our users, including:
 ...and anything else that helps us quickly understand what a user's position is within our community, and what we can do to get them more involved.
  
 
-## Logging into Capsule: 
+### Logging into Capsule: 
 
 To get started, access Capsule here: https://rethinkdb.capsulecrm.com/
 
 
-# Concepts in Capsule
+## Concepts in Capsule
 
 Before getting started with Capsule, it's important to understand a few core concepts.
 
-## People and organizations
+### People and organizations
 Capsule tracks __people__ and __organizations__ (generically referred to as _parties_).
 
 Multiple people can be part of an organization, but each person can only belong to one organization (usually the person's company or university).
 
-## Custom fields and tags
+### Custom fields and tags
 Besides the basic fields that are tracked by Capsule for people and organizations, __custom fields__ can also be added to track other useful data on users -- for example, we track the shirt size and GitHub ID of each user using a custom field.
 
 People and organizations can be tagged with __tags__ and __DataTags__. DataTags are tags that also add a set of custom fields to a particular party. For example, you could add a DataTag called "RethinkDB speaker" that adds a custom field for the name of their talk.
 
-## Opportunities and cases
+### Opportunities and cases
 
 We don't use the sales pipeline feature of Capsule yet, but you can define a sales pipeline with a set of __milestones__ that a prospective opportunity would follow. Capsule helps keep everyone informed on the status and progress of a deal, bid, or any other opportunity in the pipeline.
 
@@ -40,21 +40,21 @@ You can already add __tasks__ to any person or organization on a one-off basis (
 
 Here's an example: if you want to send David, one of our contributors, a T-shirt to thank him for his hard work, you can go to David's profile, attach a case from the top-right, choose the "Send a T-shirt" track, and assign it to yourself. You'll automatically get a list of tasks that relate to sending that shirt (send an initial email, find the shirt size, write a note, package the shirt, send a follow-up email) with dates in your calendar and dashboard. Cases and tracks make it easy to juggle tasks and share your progress with the rest of the team.
 
-## History and notes
+### History and notes
 
 People, organizations, opportunities, and cases all have a history, which tracks relevant notes and emails.
 
 When interacting with a user, it's important to note that event in the history so everyone on the team can instantly tell what the user's relationship with RethinkDB. 
 
-## The Capsule dropbox
+### The Capsule dropbox
 
 The history includes all relevant emails: those emails can be attached by bcc'ing a specific email address when sending an email to a user (or if necessary, simply forwarding the email). That specific email is the __Capsule dropbox__, which you can find by going to _Settings -> Mail Drop Box_.
 
 It's good practice to _always_ bcc the Capsule dropbox when emailing a user. Doing so lets everyone else on the team know what's been communicated to the user.
 
-# Adding a user to capsule
+## Adding a user to capsule
 
-## When should you add a user to capsule? 
+### When should you add a user to capsule? 
 
 _Whenever you have a meaningful interaction with a user._
 
@@ -65,7 +65,7 @@ If you meet someone at an event who says they're a user or potential user of Ret
 If you get an unsolicited email from a user for a support request, add them to Capsule (and bcc your reply to the Capsule dropbox).
 
 
-## Some users are automatically added to Capsule
+### Some users are automatically added to Capsule
 
 A set of scripts in the `rethinkdb/community` repository on GitHub add the following set of users:
 
@@ -79,15 +79,15 @@ When users are automatically added to Capsule, if the user already exists it wil
 
 The _Unreviewed_ and _Imported_ tags are also attached users that are automatically added, as well as a tag that indicates where the user came from (e.g. _Signed CLA_ or _GitHub issues_.)
 
-## Adding a user to Capsule manually
+### Adding a user to Capsule manually
 
 If the user doesn't already exist in Capsule (make sure to search for them by both name and GitHub ID), then you'll have to manually add them.
 
 Make sure all the checklist items mentioned below (_Checklist for reviewing a Capsule user_) are complete before adding them (or add an _Unreviewed_ tag so someone else will complete their profile.)
 
-# Capsule workflow guidelines
+## Capsule workflow guidelines
 
-## Checklist for reviewing a Capsule user
+### Checklist for reviewing a Capsule user
 
 Before the _Unreviewed_ tag is removed, make sure the following is true for a user's profile:
 
@@ -111,7 +111,7 @@ Before the _Unreviewed_ tag is removed, make sure the following is true for a us
 - If you're just adding the user, or if a significant event is worth noting, add a note in their history. What makes for a good note? Anything that relates to an event and helps build a snapshot of who the user is, and how they relate to our community (e.g. "John wrote a blog post titled 'RethinkDB in ten minutes', located here: http://johnsblog.com/rethinkdb-post".)
 - If there's a follow-up task or case that applies to the user, make sure to add it to their profile immediately: don't save it for later.
 
-## Tags used in Capsule
+### Tags used in Capsule
 
 Here's a list of tags we use in Capsule, and what they mean:
 
@@ -131,6 +131,6 @@ Here's a list of tags we use in Capsule, and what they mean:
 - _VIP_: Users that requires additional attention, or should be checked in with regularly.
 - _vipreview_: Notes users that may be VIPs, but should be reviewed by a human first.
 
-# Open questions about our Capsule process
+## Open questions about our Capsule process
 
 - Should we add a tag to organizations to ensure that they've been reviewed by hand, since Capsule auto-creates them if they don't exist? (which leads to lots of bad companies)
