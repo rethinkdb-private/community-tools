@@ -116,13 +116,15 @@ Before the _Unreviewed_ tag is removed, make sure the following is true for a us
 Here's a list of tags we use in Capsule, and what they mean:
 
 - *__system*: System DataTag that is used for one user, also named *__system*. Neither should be changed by a human -- it's used for bookkeeping by our import scripts (e.g. to record the last date of import for a particular set of users.)
-- _Blogger_: User that blog regularly and are good writers, and may be good candidates for a future RethinkDB-related blog post.
-- _Contributor_:  Users that contribute to any part of the  (the core RethinkDB project, documentation, example apps, etc.).
+- _Blogger_: Users that blog regularly and are good writers, and may be good candidates for a future RethinkDB-related blog post.
+- _Contributor_:  Users that contribute to any part of the RethinkDB ecosystem.
 - _Gift sent_: DataTag that notes if a gift has been sent to the user. Attaches a custom field for the date that the last gift was sent.
 - _GitHub issues_: Users that have opened an issue or commented on an issue on GitHub.
 - _Imported_: System tag that notes the set of users automatically imported or updated by a script, rather than a human being. Should be removed once the import process is complete.
 - _Job applicant_: Users that have applied for a position on the RethinkDB team in the past.
-- _Research_: Notes if someone on our team need needs to add additional information on the user, because minimal information was found in the initial review.
+- _Research_: Notes if someone on our team need needs to add additional information on the user, because minimal information was found in the initial review. If you add the research tag, add either:
+  *  a task if it requires a specific follow-up from a person on our team (e.g. "Slava should forward all emails from this user in his inbox."), and assign it to that person.
+  *  a note if more research is required, and not specific to a particular person (e.g. "We need to find out the name and organization of this unknown GitHub user.")
 - _RethinkDB Team_: Users that are actually on our team.
 - _Shirts for stories_: Users that have submitted a story to S4S.
 - _Signed CLA_: User that have signed the contributor license agreement, which is a necessary prerequisite before contributing to the core RethinkDB project or documentation.
