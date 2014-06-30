@@ -40,4 +40,4 @@ connection.then(function(conn) {
     });
 
 // Start the app
-server.listen(5000);
+server.listen(3001);

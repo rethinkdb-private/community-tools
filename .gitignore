@@ -11,4 +11,4 @@ meet-the-team/_site
 hestia/logs
 node_modules
 rethinkdb_data
-meetup-demo/checkins-rethinkdb/meetups.json
+meetup-demo/checkins-rethinkdb/app/meetups.json

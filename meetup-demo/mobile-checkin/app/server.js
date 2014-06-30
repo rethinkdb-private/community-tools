@@ -23,4 +23,4 @@ app.post('/checkin', function(req, res) {
 });
 
 // Start the app
-server.listen(4000);
+server.listen(3002);

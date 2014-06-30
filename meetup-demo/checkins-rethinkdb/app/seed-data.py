@@ -1,13 +1,7 @@
 #!/usr/bin/env python
-"""
-Usage:
-    seed-data.py fetch
-    seed-data.py update
-"""
-
 import requests, json, argparse, pprint, random, time, names, uuid, copy
+from flask import Flask
 from datetime import datetime
-from docopt import docopt
 from delorean import Delorean
 import rethinkdb as r
 
@@ -26,6 +20,9 @@ meetup_api = {
     'date': Delorean(datetime=datetime(2014,7,1,0,0,0,0), timezone="US/Pacific"),
 }
 
+app = Flask(__name__)
+
+@app.route('/fetch')
 def fetch_meetup_data():
     # Meetup needs ms since epoch when specifying a date range
     from_date = int(meetup_api['date'].epoch() * 1000)
@@ -33,16 +30,24 @@ def fetch_meetup_data():
     url = "https://api.meetup.com/2/open_events.json?category=%s&zip=%s&time=%d,%d&key=%s" % (meetup_api['category'], meetup_api['zip'], from_date, to_date, meetup_api['token'])
     req = requests.get(url)
     results = req.json()
-    meetups = map(lambda m: {
-        'event_name': m['name'],
-        'checkins': m['yes_rsvp_count'],
-        'lat': m['venue']['lat'],
-        'lon': m['venue']['lon'],
-    }, results['results'])
+    meetups = []
+    for m in results['results']:
+        # Skip meetups that don't have a venue       
+        if 'venue' not in m:
+            continue
+        meetups.append({
+            'event_name': m['name'],
+            'checkins': m['yes_rsvp_count'],
+            'lat': m['venue']['lat'],
+            'lon': m['venue']['lon'],
+        })
 
     with open(meetup_api['file'], 'w') as f:
         json.dump(meetups, f)
 
+    return "Fetched data from Meetup."
+
+@app.route('/update')
 def update_meetup_data():
     with open(meetup_api['file'],'r') as f:
         meetups = json.load(f)
@@ -61,7 +66,10 @@ def update_meetup_data():
                 checkins.append(meetup)
     random.shuffle(checkins)
 
-    c = r.connect(rdb['host'],rdb['port'])
+    try:
+        c = r.connect(rdb['host'],rdb['port'])
+    except r.RqlDriverError as e:
+        return "RethinkDB error: "+str(e)
     if rdb['db'] not in r.db_list().run(c):
         r.db_create(rdb['db']).run(c)
     if rdb['table'] not in r.db(rdb['db']).table_list().run(c):
@@ -75,14 +83,7 @@ def update_meetup_data():
         #time.sleep(1)
         #time.sleep(1.0/random.randint(1,50))
 
-    print "%d checkins added to RethinkDB." % len(checkins)
-
-def start():
-    args = docopt(__doc__)
-    if args['fetch']:
-        fetch_meetup_data()
-    elif args['update']:
-        update_meetup_data()
+    return "%d checkins added to RethinkDB." % len(checkins)
 
 if __name__ == "__main__":
-    start()
+    app.run(host='0.0.0.0', port=3000, debug=True)

@@ -1,4 +1,4 @@
-$required_commands = ['nginx', 'pip', 'virtualenv']
+$required_commands = ['nginx', 'npm', 'nodejs']
 
 desc 'Initialize the app'
 task :init do
@@ -15,15 +15,9 @@ task :init do
     if missing_commands > 0
         fail "ERROR: #{missing_commands} required tool#{if missing_commands > 1 then 's' end} missing."
     end
-    if not is_python_dev_installed? then
-        fail "ERROR: python-dev not installed, speedups won't be enabled." 
-    else
-        puts "python-dev found, speedups will be enabled"
-    end
     puts "All required tools installed."
     $directories_required.each{|d| ssh("mkdir -p #{$root}#{d}")}
     Rake::Task[:update_app].invoke
-    Rake::Task[:create_virtualenv].invoke
     Rake::Task[:update_requirements].invoke
     Rake::Task[:update_nginx].invoke
 end
@@ -52,13 +46,13 @@ task :restart_app do
             fail "Required file missing on server: #{f}"
         end
     end
-
+    app = $root+'app/'+$script_name
     # Kill the active application processes
     puts "Killing existing #{$app_name} server processes:"
-    ssh("ps auxww | grep \"#{$script_name}\" | grep -v \"grep\" | awk \"{print \\$2}\" | xargs --no-run-if-empty kill")
+    ssh("ps auxww | grep \"#{app}\" | grep -v \"grep\" | awk \"{print \\$2}\" | xargs --no-run-if-empty kill")
     # Start the app
     puts "Starting #{$app_name} in the background:"
-    ssh("cd #{$root}; source #{$virtualenv_dir}/bin/activate; sh -c \"nohup python app/#{$script_name} > nohup.out 2>&1 &\"")
+    ssh("cd #{$root}; sh -c \"nohup nodejs #{app} > nohup.out 2>&1 &\"")
     puts "Restarted the #{$app_name} application."
 end
 
@@ -68,17 +62,10 @@ task :tail_log do
     ssh("cd #{$root}; tail -f nohup.out")
 end
 
-desc 'Sets up a virtualenv on the remote host'
-task :create_virtualenv do
-    puts 'Creating virtualenv on remote:'
-    cmd = "cd #{$root}; virtualenv --no-site-packages --clear --distribute #{$virtualenv_dir}"
-    ssh(cmd)
-end
-
-desc 'Update external Python dependencies on the remote host'
+desc 'Update external Node.js dependencies on the remote host'
 task :update_requirements do
-    puts 'Updating virtualenv packages from requirements.txt on remote host:'
-    cmd = "cd #{$root}; source #{$virtualenv_dir}/bin/activate; pip install -r app/requirements.txt --upgrade"
+    puts 'Updating packages from package.json on remote host:'
+    cmd = "cd #{$root}app; npm install"
     ssh(cmd)
 end
 
@@ -103,12 +90,6 @@ end
 
 def is_installed?(cmd)
     out = ssh("which #{cmd} >/dev/null 2>&1 && exit 0 || exit 1", quiet: true)
-    if not out.chomp == '0' then return false end
-    return true
-end
-
-def is_python_dev_installed?
-    out = ssh("if [ ! -e $(python -c \"from distutils.sysconfig import get_makefile_filename as m; print m()\") ]; then exit 1; else exit 0; fi", quiet: true)
     if not out.chomp == '0' then return false end
     return true
 end
