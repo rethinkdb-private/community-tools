@@ -9,3 +9,4 @@ hestia/static/gen
 hestia/config.yaml
 meet-the-team/_site
 hestia/logs
+node_modules

@@ -1,0 +1,6 @@
+--- # Hestia configuration
+log_dirs: ['logs']
+event:
+    name: 'RethinkDB SF Meetup'
+    log_to: 'sf-meetup.json'
+dymo-template: 'dymo-templates/rethinkdb-nametag.label'

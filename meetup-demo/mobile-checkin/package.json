@@ -1,0 +1,11 @@
+{
+    "name": "meetup-checkin-mobile",
+    "description": "Mobile Meetup checkin app",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "express": "4.4.4",
+        "rethinkdb": "1.13.0-1",
+        "body-parser": "1.4.3"
+    }
+}

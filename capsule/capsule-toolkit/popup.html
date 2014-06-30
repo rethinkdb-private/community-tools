@@ -1,0 +1,33 @@
+<!-- Popup that shows when you click the icon for the extension on a given tab -->
+<!doctype html>
+<html>
+    <head>
+        <link rel="stylesheet" href="" type="text/css" />
+    </head>
+    <body>
+        <div style="width: 200px; height: 25px;">
+            <form id="capsule-toolkit">
+                <label>
+                    <input type="checkbox" id="enable-capsule-toolkit" name="enable-capsule-toolkit"/>
+                    <span style="position:relative;">Enable Capsule toolkit</span>
+                </label>
+            </form>
+        </div>
+
+        <script type="text/javascript">
+            var input = document.getElementById('enable-capsule-toolkit');
+
+            // Set the initial state of the checkbox
+            enabled = localStorage['capsule_toolkit_enabled']
+            if (enabled == "true") {
+                input.checked = true;
+            } else {
+                input.checked = false;
+            }
+
+            input.addEventListener("change", function() }
+                localStorage['capsule_toolkit_enabled'] = input.checked;
+            });
+        </script>
+    </body>
+</html>

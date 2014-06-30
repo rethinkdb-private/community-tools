@@ -1,0 +1,76 @@
+html, body {
+    height: 100%;
+    background: #2E313C;
+    color: white;
+    text-shadow: 0px 1px 0px rgba(0,0,0,0.2);
+    margin: 0;
+}
+body {
+    padding: 0 1em;
+    background: url('/images/drawing.png') right bottom no-repeat;
+    background-size: 200px;
+}
+h1, h2, p {
+    font-family: "Quattrocento Sans", sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
+}
+h1 {
+    padding-top: 0.5em;
+    padding-bottom: 1em;
+    font-size: 2.0em;
+}
+h2 {
+    font-size: 1.5em;
+    padding-bottom: 1.5em;
+}
+#container {
+    padding: 0.3em;
+    border-radius: 5px;
+    background: #
+
+}
+
+a#checkin-button {
+    display: inline-block;
+    text-shadow: 0px 1px 0px rgba(255,255,255,0.2);
+    background: #91C7B1;
+    font-size: 1.5em;
+    font-family: "Quattrocento Sans", sans-serif;
+    font-weight: 400;
+    text-decoration: none;
+    position: relative;
+
+    padding: 0.8em 1.5em;
+    padding-left: 2.4em;
+    color: #2B614B;
+    font-weight: bold;
+    border-radius: 3px;
+    -webkit-touch-callout: none;
+}
+
+#checkin-button:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 1.3em;
+    width: 0.2em;
+    height: 0.6em;
+    border-width: 0 4px 4px 0;
+    border-style: solid;
+    border-color: #2B614B;
+    margin-top: -11px;
+    -webkit-transform: rotate(40deg);
+    -moz-transform: rotate(40deg);
+    -ms-transform: rotate(40deg);
+    -o-transform: rotate(40deg);
+    transform: rotate(40deg);
+}
+
+#checkin-button:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+}

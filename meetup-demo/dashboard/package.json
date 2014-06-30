@@ -1,0 +1,11 @@
+{
+    "name": "meetup-checkin-dashboard",
+    "description": "Dashboard for Meetup checkins",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "socket.io": "1.0.6",
+        "express": "4.4.4",
+        "rethinkdb": "1.13.0-1"
+    }
+}

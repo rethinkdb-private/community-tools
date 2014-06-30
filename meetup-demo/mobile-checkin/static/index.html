@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Check in to this meetup</title>
+        <link href="//fonts.googleapis.com/css?family=Quattrocento+Sans:400italic,400,700italic,700" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" type="text/css" href="/css/styles.css" />
+        <meta name="viewport" content="width=device-width">
+        <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                var checkin =  function(e) {
+                    e.preventDefault();
+                    var data = {
+                        first_name: $('input[name="name"]').val(),
+                        event_name: 'Build realtime apps with RethinkDB and Firebase!',
+                        lat: 37.784973,
+                        lon: -122.405678,
+                    }
+                    console.log(data);
+                    $.ajax({
+                        url: '/checkin',
+                        type: 'POST',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json',
+                    });
+                }
+                $('form').on('submit', checkin);
+                $('#checkin-button').on('click', checkin);
+            });
+        </script>
+    </head>
+    <body>
+        <div id="container">
+            <h1>Realtime apps with RethinkDB and Firebase</h1>
+            <h2><strong>July 1, 2014</strong> at 22 4th St, San Francisco, CA</h2>
+            <a id="checkin-button" href="#"></span> Check in</a>
+            <!--<form>
+                <label for="name">Your name<input id="name" name="name" placeholder="Your name">
+                <input type="submit" value="Check in">
+            </form>-->
+            <div class="checked-in"></div>
+        </div>
+    </body>
+</html>

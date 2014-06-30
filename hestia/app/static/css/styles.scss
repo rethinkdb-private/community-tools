@@ -1,0 +1,237 @@
+$font-stack: 'Open Sans', sans-serif;
+$copse: 'Copse', serif;
+$cabin: 'Cabin', sans-serif;
+$quattrocento: 'Quattrocento Sans', sans-serif;
+$base-border-radius:  3px;
+//$visual-grid: true;
+
+$welcome-blue: #2E313C;
+$cream: rgb(242,234,235);
+$mint-green: #91C7B1;
+$gentle-green: #467A65;
+$gentle-red: #B8454B;
+
+$site-width: 1200px;
+$site-margin: 50px;
+$site-right-half-width: 450px;
+$site-left-half-width: $site-width - $site-margin*2 - $site-right-half-width;
+
+@import 'bourbon/bourbon';
+@import 'bitters/bitters';
+@import 'neat/neat';
+@import 'font-awesome/font-awesome';
+
+// Mixins -- font smoothing (credit to Maximilian Hoffmann: http://maximilianhoffmann.com/posts/better-font-rendering-on-osx)
+@mixin font-smoothing($value: on) {
+    @if $value == on {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale; }
+    @else {
+        -webkit-font-smoothing: subpixel-antialiased;
+        -moz-osx-font-smoothing: auto;
+    }
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: $quattrocento;
+    h1, h2, h3, h4, h5, h6, p {
+        font-family: $quattrocento;
+        margin: 0;
+        font-weight: normal;
+    }
+    h1 {
+        font-size: 4em;
+        line-height: 1.5em;
+    }
+    h2 {
+        font-size: 2em;
+        line-height: 1.5em;
+    }
+    h3 {
+        font-size: 1.7em;
+        font-weight: bold;
+    }
+    background: $welcome-blue;
+    color: $cream;
+}
+
+.error-bar {
+    $padding: 30px;
+    $width: $site-width - $padding*2;
+    width: $width;
+    height: 2.3em;
+    top: 0;
+    left: 50%;
+    margin-left: -$width/2;
+    padding: 0.5em $padding;
+    position: absolute;
+    display: none;
+
+    background: $gentle-red;
+    font-size: 1.3em;
+    line-height: 1.3em;
+    color: white;
+    border-radius: 0px 0px 3px 3px;
+    text-shadow: 0px 1px 0px rgba(0,0,0,0.2);
+
+    &.success { background: $gentle-green; }
+    
+    a {
+        color: white;
+        text-decoration: none;
+        border-bottom: thin dashed tint($gentle-red, 40%);
+    }
+}
+
+#main {
+    width: $site-width;
+    margin: $site-margin auto;
+    padding: 0 50px;
+    h2 { margin-bottom: 1em; }
+}
+
+aside {
+    float: right;
+    width: 330px;
+}
+
+#main-form {
+    margin-right: $site-right-half-width;
+}
+section.form-section {
+    h3 { margin-bottom: 1.1em; }
+    background: tint($welcome-blue, 15%);
+    padding: 2em;
+    margin-bottom: 1.5em;
+    &:last-child { margin-bottom: 0; }
+    border-radius: 3px;
+}
+
+form {
+    .row {
+        position: relative;
+        margin-bottom: 1.5em;
+        @include outer-container;
+        &:last-child {
+            margin-bottom: 0;
+        }
+        &:after { clear: left; }
+    }
+    label {
+        @include span-columns(4);
+        font-size: 1.4em;
+        line-height: 1.7em;
+        font-family: $quattrocento;
+    }
+    .input-wrapper {
+        @include span-columns(8);
+        @include omega();
+        &:last-child textarea, input[type="email"], input[type="number"],
+        input[type="password"], input[type="search"], input[type="tel"],
+        input[type="text"], input[type="url"], input[type="color"],
+        input[type="date"], input[type="datetime"], input[type="datetime-local"],
+        input[type="month"], input[type="time"], input[type="week"],
+        select[multiple=multiple] { margin-bottom: 0; }
+    }
+    textarea, input[type="email"], input[type="number"],
+    input[type="password"], input[type="search"], input[type="tel"],
+    input[type="text"], input[type="url"], input[type="color"],
+    input[type="date"], input[type="datetime"], input[type="datetime-local"],
+    input[type="month"], input[type="time"], input[type="week"],
+    select[multiple=multiple] {
+        font-family: $quattrocento;
+        font-size: 1.3em;
+        padding: 0.25em 0.4em;
+        color: #333;
+    }
+}
+
+.row.github .loading {
+    opacity: 0;
+    position: absolute;
+    right: 1em;
+    top: 0.4em;
+    &.show { opacity: 0.5 }
+}
+
+a#submit {
+    display: inline-block;
+    background: $mint-green;
+    font-size: 1.5em;
+    padding: 1em 1.5em;
+    color: shade($mint-green, 60%);
+    font-weight: bold;
+    border-radius: 3px;
+    &:active {
+        @include box-shadow(inset 0px 1px 3px rgba(0, 0, 0, 0.3), 0px 1px 0px shade($mint-green, 20%));
+        text-shadow: 0px 1px 0px rgba(255,255,255,0.3);
+        background: shade($mint-green, 30%);
+        color: shade($mint-green, 70%);
+    }
+}
+
+.tooltip {
+    background: $gentle-red;
+    border-radius: 3px;
+    padding: 0.5em 0.7em;
+    position: absolute;
+    top: -0.1em;
+    left: $site-left-half-width - 47px;
+    margin-right: $site-left-half-width - $site-width;
+    pointer-events: none;
+    font-size: 1.4em;
+    text-shadow: 0px 1px 0px rgba(0,0,0,0.2);
+
+    opacity: 0;
+    @include transition(
+        opacity 0.1s ease-in-out,
+        left 0.1s ease-in-out
+    );
+
+    &.show {
+        opacity: 1;
+        left: $site-left-half-width - 40px;
+    }
+
+    &.success {
+        background: $gentle-green;
+        &:before { background: $gentle-green }
+    }
+
+    &:before {
+        $size: 14px;
+        content: '';
+        position: absolute;
+        left: -$size/2;
+        width: $size;
+        height: $size;
+        @include transform(rotate(45deg));
+        display: block;
+        background: $gentle-red;
+        top: 35%;
+    }
+}
+
+.loading {
+    width: 24px;
+    height: 24px;
+
+    &:before {
+        content: "";
+        display: block;
+
+        width: 22px;
+        height: 22px;
+        border-radius: 100%;
+        border-top: 2px solid #222;
+        border-right: 2px solid #333;
+
+        @include animation(spin 0.7s linear infinite);
+        @include transition(
+            all 0.5s, 
+            opacity 0.1s ease-in-out
+        );
+    }
+}

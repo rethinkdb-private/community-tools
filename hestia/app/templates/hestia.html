@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Basic page information -->
+        <meta charset="utf-8">
+        <title>Welcome to RethinkDB</title>
+
+        <!-- Mobile-specific metas -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+        <!-- CSS stylesheets -->
+        {% assets "css_all" %}
+            <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"></script>
+        {% endassets %}
+
+        <!-- JavaScript -->
+        {% assets "js_all" %}
+            <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,800,700">
+        <link href="http://fonts.googleapis.com/css?family=Copse" rel="stylesheet" type="text/css">
+        <link href="http://fonts.googleapis.com/css?family=Cabin:400,500,600,700,400italic,500italic,600italic,700italic" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Quattrocento+Sans:400italic,400,700italic,700" rel="stylesheet" type="text/css">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+        <!-- Favicons -->
+        <link rel="shortcut icon" href="/favicon.ico">
+        <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+    </head>
+    <body>
+        <div class="error-bar error" id="dymo-not-loaded"
+            data-error="<strong>Oh no! The DYMO browser plugin isn't available:</strong> make sure you give it permission to run, or try <a href='#' class='reload-page'>reloading the page</a>."
+            data-success="<strong>Hurray! DYMO browser plugin loaded:</strong> we're ready to print some labels."></div>
+        <div class="error-bar" id="no-dymo-printer"
+            data-error="<strong>Oh no! The DYMO printer wasn't found:</strong> make sure it's plugged in and the drivers are properly installed, then <a href='#' class='reload-page'>reload the page</a>."></div>
+        <div id="main">
+            <h1>{{ event_name }}</h1>
+            <h2>Welcome, please sign in!</h2>
+            <aside><img src="{{ url_for('static', filename='images/thinker-with-coffee_resized.png') }}"></aside>
+            <div id="main-form">
+                <section class="form-section">
+                    <h3>Quickly print your nametag via GitHub.</h3>
+                    <form id="github-form">
+                        <div class="row github">
+                            <label for="github-username">GitHub username:</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="github-username" autocomplete="off" placeholder="We'll get your info from GitHub."></input>
+                                <div class="loading"></div>
+                                <div class="tooltip" data-error="There's no GitHub user by that name." data-success="OK, we found you on GitHub!"></div>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+                <section class="form-section">
+                    <h3>Tell us about yourself (we can't wait to meet you!)</h3>
+                    <form id="profile-form">
+                        <div class="row name">
+                            <label for="name">Name:</label>
+                            <div class="input-wrapper"><input type="text" id="name" autocomplete="off" placeholder="Clark Kent"></div>
+                            <div class="tooltip" data-error="Enter your name." data-success="Great, we're all set!"></div>
+                        </div>
+                        <div class="row about">
+                            <label for="about">About you:</label>
+                            <div class="input-wrapper"><input type="text" id="about" autocomplete="off" placeholder="Reporter at The Daily Planet"></div>
+                        </div>
+                    </form>
+                </section>
+                <a href="#" id="submit">Print a nametag &rarr;</a>
+            </div>
+        </div>
+    </body>
+</html>

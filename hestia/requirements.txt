@@ -1,4 +1,0 @@
-flask
-flask-assets
-pyyaml
-requests
