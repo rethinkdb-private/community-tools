@@ -4,40 +4,19 @@
         <title>Meetup check-ins in realtime</title>
         <link href="//fonts.googleapis.com/css?family=Quattrocento+Sans:400italic,400,700italic,700" rel="stylesheet" type="text/css">
         <link rel="stylesheet" type="text/css" href="/css/styles.css" />
-        <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
 
-        <!-- Leaflet and libraries -->
+        <!-- Libraries -->
+        <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
         <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
         <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
         <link rel="stylesheet" type="text/css" href="/js/markercluster/MarkerCluster.css" />
         <link rel="stylesheet" type="text/css" href="/js/markercluster/MarkerCluster.Default.css" />
         <script type="text/javascript" src="/js/markercluster/leaflet.markercluster.js"></script>
-
         <script type="text/javascript" src="/js/socket.io.js"></script>
-        <!-- UI -->
-        <script type="text/javascript" src="/js/jquery.quicksand.js"></script>
+
+        <!-- UI and app -->
+        <script type="text/javascript" src="/js/ui.js"></script>
         <script type="text/javascript" src="/js/app.js"></script>
-        <script type="text/javascript">
-            $(document).ready(function() {
-                var map = L.map('map').setView([37.7820, -122.4100], 15);
-
-                L.tileLayer('http://{s}.tiles.mapbox.com/v3/mglukhovsky.ikf53bk4/{z}/{x}/{y}.png', {
-                    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-                    maxZoom: 18
-                }).addTo(map);
-
-                var markers = L.markerClusterGroup({maxClusterRadius: 20});
-                map.addLayer(markers);
-
-                var socket = io.connect('http://'+document.domain+':'+location.port);
-
-                socket.on('checkin', function(checkin) {
-                    m = new L.marker(new L.LatLng(checkin.lat,checkin.lon));
-                    markers.addLayer(m);
-                    show_meetup_checkin(checkin);
-                });
-            });
-        </script>
     </head>
     <body>
         <div id="sidebar">
