@@ -16,7 +16,6 @@ app.post('/checkin', coro(function *(req, res) {
     // Establish a RethinkDB connection for the new client
     conn = yield r.connect({host: 'localhost', port: 28015});
 
-    console.log(req.body);
     // Insert the check-in into the database
     yield r.db('meetup').table('checkins').insert({
         event_name: req.body.event_name,
