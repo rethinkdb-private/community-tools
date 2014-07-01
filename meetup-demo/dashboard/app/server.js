@@ -1,43 +1,37 @@
-// Set up Express app and modules
+// Set up RethinkDB, Express app and modules
+var r = require('rethinkdb')
 var express = require('express')
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+var coro = require('bluebird').coroutine;
+
+// Maintain a SocketIO connection to the client
+io.on('connection', coro(function *(socket) {
+    // Establish a RethinkDB connection for the new client
+    conn = yield r.connect({host: 'localhost', port: 28015});
+
+    // Follow a changefeed of check-ins
+    feed = yield r.db('meetup').table('checkins').changes().run(conn);
+
+    // For each change in the feed, notify the browser
+    feed.each(function(err, change) {
+        if (change.new_val) {
+            socket.emit('checkin', change.new_val);
+        }
+    });
+
+    // Close the RethinkDB connection when the browser disconnects
+    socket.on('disconnect', function() {
+        conn.close();
+    });
+}));
+
+// Serve static files
 app.use(express.static(__dirname + '/static'));
-
-// Create a RethinkDB connection
-var r = require('rethinkdb')
-var connection = r.connect({ host: 'localhost', port: 28015});
-
-// Send static files
 app.get('/', function(req, res) {
     res.sendfile(__dirname + '/index.html');
 });
-
-// Maintain a list of SocketIO clients whenever a client connects or disconnects
-var clients = [];
-io.on('connection', function (socket) {
-    clients.push(socket);
-
-    socket.on('disconnect', function() {
-        clients.splice(clients.indexOf(socket),1);
-    });
-});
-
-// Follows a changefeed of check-ins
-connection.then(function(conn) {
-    return r.db('meetup').table('checkins').changes().run(conn).error(console.log);
-})
-    .then(function(changefeed) {
-        // Push all new values in the feed to each SocketIO client
-        changefeed.each(function(err, change) {
-            if (change.new_val) {
-                clients.forEach(function(client) {
-                    client.emit('checkin', change.new_val);
-                });
-            }
-        });
-    });
 
 // Start the app
 server.listen(3001);

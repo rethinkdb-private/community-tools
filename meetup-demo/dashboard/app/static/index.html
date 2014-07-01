@@ -9,7 +9,6 @@
         <!-- Leaflet and libraries -->
         <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
         <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-        <!--<script type="text/javascript" src="/js/PruneCluster.min.js"></script>-->
         <link rel="stylesheet" type="text/css" href="/js/markercluster/MarkerCluster.css" />
         <link rel="stylesheet" type="text/css" href="/js/markercluster/MarkerCluster.Default.css" />
         <script type="text/javascript" src="/js/markercluster/leaflet.markercluster.js"></script>
@@ -18,24 +17,8 @@
         <!-- UI -->
         <script type="text/javascript" src="/js/jquery.quicksand.js"></script>
         <script type="text/javascript" src="/js/app.js"></script>
-        <!--<script type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"></script>-->
-        <!--<script type="text/javascript" src="/js/heatmap.js"></script>
-        <script type="text/javascript" src="heatmap-openlayers.js"></script>-->
         <script type="text/javascript">
             $(document).ready(function() {
-                /* HEATMAP
-                var heatmap = heatmapFactory.create({
-                    "element": "heatmap",
-                });
-                heatmap.store.setDataSet({max: 10, data: [{x: 10, y: 20, count: 5}]})
-                */
-                /*var tiles = L.tileLayer('http://{s}.tiles.mapbox.com/v3/mglukhovsky.ikf53bk4/{z}/{x}/{y}.png', {
-                    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-                    maxZoom: 18
-                });
-                var lat_lng = L.LatLng(37.7833, -122.4167);
-                var map = L.map('map', { center: lat_lng, zoom: 13, layers: [tiles]});*/
-                
                 var map = L.map('map').setView([37.7820, -122.4100], 15);
 
                 L.tileLayer('http://{s}.tiles.mapbox.com/v3/mglukhovsky.ikf53bk4/{z}/{x}/{y}.png', {
@@ -45,21 +28,12 @@
 
                 var markers = L.markerClusterGroup({maxClusterRadius: 20});
                 map.addLayer(markers);
-                // NEW var leaflet_view = new PruneClusterForLeaflet()
-                // NEW map.addLayer(leaflet_view);
 
                 var socket = io.connect('http://'+document.domain+':'+location.port);
 
-
                 socket.on('checkin', function(checkin) {
-                    //console.log(checkin);
                     m = new L.marker(new L.LatLng(checkin.lat,checkin.lon));
                     markers.addLayer(m);
-                    //console.log(marker);
-                    //marker = new PruneCluster.Marker(checkin.lat,checkin.lon);
-                    //leaflet_view.RegisterMarker(marker);
-                    //leaflet_view.ProcessView();
-                    //$('#list').prepend('<li><span class="name">' + checkin.first_name + '</span> checked in at ' + checkin.event_name  + '</li>');
                     show_meetup_checkin(checkin);
                 });
             });
@@ -74,6 +48,5 @@
             <h1>Meetups in San Francisco, CA on July 1, 2014</h1>
             <div id="map"></div>
         </div>
-        <!--<div id="heatmap"></div>-->
     </body>
 </html>
