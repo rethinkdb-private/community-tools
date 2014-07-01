@@ -9,6 +9,10 @@
         <script type="text/javascript">
             $(document).ready(function() {
                 var checkin =  function(e) {
+                    $('#checkin-button').addClass('flash');
+                    setTimeout(function() {
+                        $('#checkin-button').removeClass('flash');
+                    }, 200);
                     e.preventDefault();
                     var data = {
                         first_name: $('input[name="name"]').val(),

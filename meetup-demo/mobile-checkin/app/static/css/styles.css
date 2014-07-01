@@ -46,6 +46,16 @@ a#checkin-button {
     -webkit-touch-callout: none;
 }
 
+a#checkin-button:active, a#checkin-button:touchstart {
+    background-color: #E45C5C;
+    color: #692525;
+}
+
+a#checkin-button.flash {
+    background-color: #E45C5C;
+    color: #692525;
+}
+
 #checkin-button:before {
     content: "";
     position: absolute;
