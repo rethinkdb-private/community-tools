@@ -1,3 +1,4 @@
+// Dashboard frontend
 $(document).ready(function() {
     // Open the SocketIO connection to the web server
     var socket = io.connect('http://'+document.domain+':'+location.port);

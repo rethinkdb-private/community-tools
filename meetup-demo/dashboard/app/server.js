@@ -1,3 +1,4 @@
+// Dashboard server
 // Set up RethinkDB, Express app and modules
 var r = require('rethinkdb')
 var express = require('express')
@@ -19,11 +20,6 @@ io.on('connection', coro(function *(socket) {
         if (change.new_val) {
             socket.emit('checkin', change.new_val);
         }
-    });
-
-    // Close the RethinkDB connection when the browser disconnects
-    socket.on('disconnect', function() {
-        conn.close();
     });
 }));
 
