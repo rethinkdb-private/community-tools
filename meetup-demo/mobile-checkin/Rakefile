@@ -1,14 +1,12 @@
 import '../../config/node-app.rake'
 
 $remote = 'hestia.rethinkdb.com'
+$remote_port = '440'
 $root = '/srv/www/mobile.checkin.hestia.rethinkdb.com/'
 $script_name = 'server.js'
 $app_name = 'Meetup demo: mobile check-in'
 $user = 'michael'
 $required_files = []
-$directories_required = [
-    "app",
-]
 $app_files_to_copy = [
     "app/package.json",
     "app/#{$script_name}",

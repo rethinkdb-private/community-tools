@@ -2,12 +2,13 @@ import '../../config/python-app.rake'
 
 $required_commands = ['rethinkdb', 'nginx', 'pip', 'virtualenv']
 $remote = 'hestia.rethinkdb.com'
+$remote_port = '440'
 $root = '/srv/www/server.checkin.hestia.rethinkdb.com/'
 $virtualenv_dir = 'env'
+$user = 'michael'
 $script_name = 'seed-data.py'
 $app_name = 'Meetup demo: data seed service'
 $required_files = []
-$user = 'michael'
 $app_files_to_copy = [
     "app/requirements.txt",
     "app/#{$script_name}",
@@ -18,9 +19,6 @@ $app_files_to_exclude = [
     ".sass-cache",
     "meetups.json",
     "rethinkdb_data",
-]
-$directories_required = [
-    "app",
 ]
 
 desc 'Restart the RethinkDB server'

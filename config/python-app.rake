@@ -4,6 +4,8 @@ def check_required_variables
     vars = [
         # Address of the remote server to ssh / scp files to
         "$remote",
+        # Port of the remote server to ssh into
+        "$remote_port",
         # Directory on the remote for the app
         "$root",
         # Filename of the app's primary file to run
@@ -15,8 +17,6 @@ def check_required_variables
         # Commands that must exist (be installed) on the remote server before
         # this app can run. Default value: []
         "$required_commands",
-        # Directories that should exist before the app can run (on init)
-        "$directories_required",
         # Files that have to exist on the remote server before the app can run
         # (these should be manually added / created, e.g. configuration files)
         "$required_files",
@@ -43,12 +43,22 @@ def check_required_variables
         exit 1
     end
 end
+
+# Check for required variables, and set up a background SSH master process
 check_required_variables()
+$ssh_master_file = ".ssh-master_%r_%h_%p"
+# SSH flags being used:
+# -f: background the SSH session
+# -M : place the SSH client into master mode for connection sharing
+# -N : do not execute a remote command
+# -S : specifies the location of a control socket for connection sharing
+# -o ControlPersist=n : timeout in seconds to kill the master ssh session if inactive
+# -p : remote port to connect to via ssh
+system("ssh -fMN -S #{$ssh_master_file} -o ControlPersist=10 -p #{$remote_port} #{$remote}")
 
 desc 'Initialize the app'
 task :init do
     Rake::Task[:check_required_tools].invoke
-    $directories_required.each{|d| ssh("mkdir -p #{$root}#{d}")}
     Rake::Task[:update_app].invoke
     Rake::Task[:create_virtualenv].invoke
     Rake::Task[:update_requirements].invoke
@@ -105,7 +115,10 @@ task :restart_app do
     # Check to make sure we have all the required files on the server
     missing_required_files = 0
     $required_files.each do |f|
-        output = `ssh #{$remote} -p 440 'ls #{$root}#{f}'`
+        # SSH flags being used:
+        # -S : specifies the location of a control socket for connection sharing
+        # -p : remote port to connect to via ssh
+        output = `ssh -S #{$ssh_master_file} -p #{$remote_port} #{$remote} 'ls #{$root}#{f}'`
         if output.chomp != $root+f
             puts "Required file missing on server: #{f}"
             missing_required_files += 1
@@ -151,16 +164,31 @@ end
 # Copy a file to the specificed remote directory
 def scp(local_file, remote_dir)
     excluded = $app_files_to_exclude.map {|f| '--exclude=' + f}.join(' ')
-    sh "rsync -e 'ssh -p 440' -rpvz #{excluded} #{local_file} #{$user}@#{remote_dir}"
+    # SSH flags being used:
+    # -S : specifies the location of a control socket for connection sharing
+    # -p : remote port to connect to via ssh
+    # ---
+    # rsync flags being used:
+    # -e : specify an alternate remote shell program (specific ssh flags)
+    # -r : copy directories recursively
+    # -p : set destination permission to be the same as source premissions
+    # -v : verbose mode
+    # -z : compress data
+    sh "rsync -e 'ssh -S #{$ssh_master_file} -p #{$remote_port}' -rpvz #{excluded} #{local_file} #{$user}@#{remote_dir}/"
 end
 
 # Run an arbitrary command via SSH
 def ssh(command, interactive: false, quiet: false, quiet_ssh: true)
-    ssh_cmd = "ssh #{$remote} #{interactive ? '-t' : ''} -p 440 '#{command}'#{interactive ? '' : '; echo $?'}"
+    # Use the background ssh master process and ssh in, using interactive mode based on flags passed
+    # SSH flags being used:
+    # -S : specifies the location of a control socket for connection sharing
+    # -t : force pseudo-tty allocation (allow interactive sessions for things like entering passwords)
+    # -p : remote port to connect to via ssh
+    ssh_cmd = "ssh -S #{$ssh_master_file} #{interactive ? '-t' : ''} -p #{$remote_port} #{$remote} '#{command}'#{interactive ? '' : '; echo $?'}"
     unless quiet then puts command end
     unless quiet_ssh then puts ssh_cmd end
     if interactive
-        sh "ssh #{$remote} -t -p 440 '#{command}'"
+        system(ssh_cmd)
     else
         exit_code = `#{ssh_cmd}`
         return exit_code

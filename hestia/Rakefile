@@ -1,17 +1,16 @@
 import '../config/python-app.rake'
 
+$required_commands = ['nginx', 'pip', 'virtualenv']
 $remote = 'hestia.rethinkdb.com'
+$remote_port = '440'
 $root = '/srv/www/meetup.hestia.rethinkdb.com/'
 $virtualenv_dir = 'env'
+$user = 'michael'
 $script_name = 'hestia.py'
 $app_name = 'Hestia meetup service'
-# File that has to exist before the app can run (manually add these files)
 $required_files = [
     "app/config.yaml",
 ]
-# User to ssh / scp as, must have sudo access
-$user = 'michael'
-# App files that should be copied when the app is updated
 $app_files_to_copy = [
     "app/requirements.txt",
     "app/#{$script_name}",
@@ -20,14 +19,8 @@ $app_files_to_copy = [
     "app/static",
     "app/templates",
 ]
-# Patten of files to exclude when copying app files
 $app_files_to_exclude = [
     ".DS_Store",
     ".webassets-cache",
     ".sass-cache",
-]
-# Directories that should exist before the app can run (on init)
-$directories_required = [
-    "app",
-    "logs",
 ]
