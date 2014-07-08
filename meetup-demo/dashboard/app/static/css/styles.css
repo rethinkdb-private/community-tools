@@ -75,6 +75,10 @@ p {
     background: #23343D;
 }
 
+#list li.rethinkdb {
+
+}
+
 #list p {
     margin: 0;
 }
@@ -84,4 +88,19 @@ p {
     height: 1.1em;
     margin-bottom: 0.3em;
     overflow: hidden;
+}
+
+.marker-cluster {
+    border-radius: 40px !important;
+}
+
+.marker-cluster div {
+    width: 70px !important;
+    height: 70px !important;
+    border-radius: 35px !important;
+}
+
+.marker-cluster span {
+    font-size: 35px !important;
+    line-height: 70px !important;
 }

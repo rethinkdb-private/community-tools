@@ -1,24 +1,17 @@
 import '../../config/python-app.rake'
 
-# TODO: access variables from the imported Rakefile and add to the list of required commands
-#puts $required_commands
-#$required_commands << 'rethinkdb'
-
+$required_commands = ['rethinkdb', 'nginx', 'pip', 'virtualenv']
 $remote = 'hestia.rethinkdb.com'
 $root = '/srv/www/server.checkin.hestia.rethinkdb.com/'
 $virtualenv_dir = 'env'
 $script_name = 'seed-data.py'
 $app_name = 'Meetup demo: data seed service'
-# File that has to exist before the app can run (manually add these files)
 $required_files = []
-# User to ssh / scp as, must have sudo access
 $user = 'michael'
-# App files that should be copied when the app is updated
 $app_files_to_copy = [
     "app/requirements.txt",
     "app/#{$script_name}",
 ]
-# Patten of files to exclude when copying app files
 $app_files_to_exclude = [
     ".DS_Store",
     ".webassets-cache",
@@ -26,7 +19,6 @@ $app_files_to_exclude = [
     "meetups.json",
     "rethinkdb_data",
 ]
-# Directories that should exist before the app can run (on init)
 $directories_required = [
     "app",
 ]

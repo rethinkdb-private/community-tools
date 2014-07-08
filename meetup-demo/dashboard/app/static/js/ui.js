@@ -78,7 +78,27 @@ $(document).ready(function() {
     }).addTo(map);
 
     // Add a layer to the map to track checkins via colorful markers
-    markers = L.markerClusterGroup({maxClusterRadius: 20});
+    //markers = L.markerClusterGroup({maxClusterRadius: 20});
+    markers = new L.MarkerClusterGroup({
+
+        iconCreateFunction: function(cluster) {
+            var childCount = cluster.getChildCount();
+            var c = ' marker-cluster-';
+            if (childCount < 10) {
+                c += 'small';
+            } else if (childCount < 100) {
+                c += 'medium';
+            } else {
+                c += 'large';
+            }
+
+            return new L.DivIcon({
+                html: '<div><span>' + childCount + '</span></div>',
+                className: 'marker-cluster' + c,
+                iconSize: new L.Point(80, 80) 
+            });
+        }
+    });
     map.addLayer(markers);
 
 }); 
