@@ -5,7 +5,7 @@
     "private": true,
     "dependencies": {
         "socket.io": "1.0.6",
-        "express": "4.4.4",
+        "express": "4.20.0",
         "rethinkdb": "1.13.0-1",
         "bluebird": "2.1.3"
     }
